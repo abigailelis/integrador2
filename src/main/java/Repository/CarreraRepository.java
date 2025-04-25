@@ -1,11 +1,12 @@
 package Repository;
-
+import DTO.*;
 import Entities.*;
 import Factory.JPAUtil;
 import com.opencsv.*;
 import com.opencsv.exceptions.CsvValidationException;
 import javax.persistence.*;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CarreraRepository {
@@ -48,13 +49,27 @@ public class CarreraRepository {
 
     // Buscar carrera por ID
     public CarreraDTO buscarCarreraId(int id) {
-        return em.find(Carrera.class, id);
+        Carrera carrera = em.find(Carrera.class, id);
+        if (carrera == null) return null;
+
+        return new CarreraDTO(
+                carrera.getId_carrera(),
+                carrera.getCarrera(),
+                carrera.getDuracion()
+        );
     }
 
     // Buscar todas las carreras
     public List<CarreraDTO> buscarTodasCarreras() {
-        TypedQuery<CarreraDTO> query = em.createQuery("SELECT c FROM Carrera c", Carrera.class);
-        return query.getResultList();
+        TypedQuery<Carrera> query = em.createQuery("SELECT c FROM Carrera c", Carrera.class);
+        List<Carrera> resultados = query.getResultList();
+        List<CarreraDTO> carrerasDTO = new ArrayList<>();
+
+        for (Carrera c : resultados) {
+            carrerasDTO.add(new CarreraDTO(c.getId_carrera(), c.getCarrera(), c.getDuracion()));
+        }
+
+        return carrerasDTO;
     }
 
     // Insertar carrera manualmente
