@@ -1,5 +1,13 @@
 package Repository;
 
+import Entities.*;
+import Factory.JPAUtil;
+import com.opencsv.*;
+import com.opencsv.exceptions.CsvValidationException;
+import javax.persistence.*;
+import java.io.*;
+import java.util.List;
+
 public class CarreraRepository {
     /**
      * Reads a CSV file and inserts new person records into the database.
@@ -9,7 +17,14 @@ public class CarreraRepository {
      * @throws IOException if an error occurs while reading the CSV file.
      * @throws CsvValidationException if the CSV format is invalid or data validation fails.
      */
-    public void insertPersonsFromCSV(String urlFile) throws IOException, CsvValidationException {
+    private EntityManager em;
+
+    public CarreraRepository() {
+        this.em = JPAUtil.getEntityManager();
+    }
+
+    // Insertar carras desde archivo CSV
+    public void insertarCarreraCSV(String urlFile) throws IOException, CsvValidationException {
         EntityManager em = JPAUtil.getEntityManager();
         CSVReader reader = new CSVReader(new FileReader(urlFile));
         String[] line;
@@ -18,21 +33,40 @@ public class CarreraRepository {
         em.getTransaction().begin();
 
         while((line = reader.readNext()) != null){
-            Person person = new Person();
+            Carrera carrera = new Carrera();
 
-            person.setName(line[0]);
-            person.setAge(Integer.parseInt(line[1]));
-            person.setAddress(em.find(Address.class, Integer.parseInt(line[2])));
-            if(!line[3].equals("null"))
-                person.setPartner(em.find(Partner.class, Integer.parseInt(line[3])));
-            else
-                person.setPartner(null);
-
-            em.persist(person);
+            carrera.setId_carrera(Integer.parseInt(line[0]));
+            carrera.setCarrera(line[1]);
+            carrera.setDuracion(Integer.parseInt(line[2]));
+            em.persist(carrera);
         }
 
         em.getTransaction().commit();
-        System.out.print("\nPeople added successfully");
+        System.out.print("\nCarreras agregadas exitosamente");
         em.close();
+    }
+
+    // Buscar carrera por ID
+    public CarreraDTO buscarCarreraId(int id) {
+        return em.find(Carrera.class, id);
+    }
+
+    // Buscar todas las carreras
+    public List<CarreraDTO> buscarTodasCarreras() {
+        TypedQuery<CarreraDTO> query = em.createQuery("SELECT c FROM Carrera c", Carrera.class);
+        return query.getResultList();
+    }
+
+    // Insertar carrera manualmente
+    public void insertarCarrera(Carrera carrera) {
+        EntityTransaction transaction = em.getTransaction();
+        try {
+            transaction.begin();
+            em.persist(carrera);
+            transaction.commit();
+        } catch (Exception e) {
+            transaction.rollback();
+            throw e;
+        }
     }
 }
