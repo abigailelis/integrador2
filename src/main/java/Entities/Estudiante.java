@@ -2,24 +2,36 @@ package Entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.List;
 
+import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 public class Estudiante {
-
     @Id
-    private int id_carrera;
+    private int DNI;
 
     @Column
-    private String carrera;
+    private String nombre;
 
     @Column
-    private int duracion;
+    private String apellido;
 
-    @OneToMany(mappedBy = "estudiante")
-    private List<EstudianteCarrera> carreras;
+    @Column
+    private int edad;
+
+    @Column
+    private String genero;
+
+    @Column
+    private String ciudad;
+
+    @Column
+    private int LU;
+
+    @OneToMany(mappedBy = "carrera")
+    private List<EstudianteCarrera> estudiantes;
+
 }

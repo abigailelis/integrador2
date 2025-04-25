@@ -20,7 +20,7 @@ public class EstudianteCarrera {
 
     @ManyToOne
     @JoinColumn(name = "id_carrera", insertable = false, updatable = false)
-    private Carrera carrera;
+    private Estudiante carrera;
 
     @Column
     private int inscripcion;

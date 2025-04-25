@@ -2,37 +2,24 @@ package Entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-
-import javax.management.ConstructorParameters;
 import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 public class Carrera {
+
     @Id
-    private int DNI;
+    private int id_carrera;
 
     @Column
-    private String nombre;
+    private String carrera;
 
     @Column
-    private String apellido;
+    private int duracion;
 
-    @Column
-    private int edad;
-
-    @Column
-    private String genero;
-
-    @Column
-    private String ciudad;
-
-    @Column
-    private int LU;
-
-    @OneToMany(mappedBy = "carrera")
-    private List<EstudianteCarrera> estudiantes;
-
+    @OneToMany(mappedBy = "estudiante")
+    private List<EstudianteCarrera> carreras;
 }
