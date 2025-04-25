@@ -81,13 +81,12 @@ public class EstudianteRepository {
         return estudiantes;
     }
 
-    public List<EstudianteDTO> buscarEstudiantesApellido(String apellido){
+    public List<EstudianteDTO> buscarEstudiantesApellido(){
         List<EstudianteDTO> estudiantes = em.createQuery(
                         "SELECT new DTO.EstudianteDTO(e.DNI, e.nombre, e.apellido, e.edad, e.genero, e.ciudad, e.LU) " +
                                 "FROM Estudiante e " +
-                                "WHERE e.apellido = :apellido",
+                                "ORDER BY e.apellido",
                         EstudianteDTO.class)
-                .setParameter("apellido", apellido)
                 .getResultList();
         return estudiantes;
     }
