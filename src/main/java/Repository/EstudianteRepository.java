@@ -5,6 +5,7 @@ import Entities.Estudiante;
 import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.List;
 import Factory.JPAUtil;
 import com.opencsv.CSVReader;
@@ -60,41 +61,62 @@ public class EstudianteRepository {
     }
 
     public List<EstudianteDTO> buscarEstudiantesGenero(String genero){
-        List<EstudianteDTO> estudiantes = em.createQuery(
+        List<Estudiante> estudiantes = em.createQuery(
                         "SELECT new DTO.EstudianteDTO(e.DNI, e.nombre, e.apellido, e.edad, e.genero, e.ciudad, e.LU) " +
                                 "FROM Estudiante e " +
                                 "WHERE e.genero = :genero",
-                        EstudianteDTO.class)
+                        Estudiante.class)
                 .setParameter("genero", genero)
                 .getResultList();
-        return estudiantes;
+        return crearDtos(estudiantes);
     }
 
     public List<EstudianteDTO> buscarEstudiantesLU(int LU){
-        List<EstudianteDTO> estudiantes = em.createQuery(
+        List<Estudiante> estudiantes = em.createQuery(
                         "SELECT new DTO.EstudianteDTO(e.DNI, e.nombre, e.apellido, e.edad, e.genero, e.ciudad, e.LU) " +
                                 "FROM Estudiante e " +
                                 "WHERE e.LU = :LU",
-                        EstudianteDTO.class)
+                        Estudiante.class)
                 .setParameter("LU", LU)
                 .getResultList();
-        return estudiantes;
+        return crearDtos(estudiantes);
     }
 
     public List<EstudianteDTO> buscarEstudiantesApellido(){
-        List<EstudianteDTO> estudiantes = em.createQuery(
+        List<Estudiante> estudiantes = em.createQuery(
                         "SELECT new DTO.EstudianteDTO(e.DNI, e.nombre, e.apellido, e.edad, e.genero, e.ciudad, e.LU) " +
                                 "FROM Estudiante e " +
                                 "ORDER BY e.apellido",
-                        EstudianteDTO.class)
+                        Estudiante.class)
                 .getResultList();
-        return estudiantes;
+        return crearDtos(estudiantes);
+    }
+
+    public List<EstudianteDTO> buscarEstudiantesApellido(String carrera, String ciudad){
+        List<Estudiante> estudiantes = em.createQuery(
+                        "SELECT new DTO.EstudianteDTO(e.DNI, e.nombre, e.apellido, e.edad, e.genero, e.ciudad, e.LU) " +
+                                "FROM Estudiante e " +
+                                "JOIN EstudianteCarrera ec " +
+                                "WHERE carrera = :carrera AND ciudad = :ciudad",
+                        Estudiante.class)
+                .setParameter("carrera", carrera)
+                .setParameter("ciudad", ciudad)
+                .getResultList();
+
+        return crearDtos(estudiantes);
     }
 
     public List<EstudianteDTO> buscarEstudiantes(){
         List<EstudianteDTO> estudiantes = em.createQuery("SELECT e FROM Estudiante e", EstudianteDTO.class).getResultList();
-
         return estudiantes;
     }
 
+    public  List<EstudianteDTO> crearDtos(List<Estudiante> estudiantes){
+        List<EstudianteDTO> estudiantesDTO = new ArrayList<>();
+        for (Estudiante e: estudiantes){
+            EstudianteDTO estudianteDTO = new EstudianteDTO(e.DNI, e.nombre, e.apellido, e.edad, e.genero, e.ciudad, e.LU);
+            estudiantesDTO.add(estudianteDTO);
+        }
+        return estudiantesDTO;
+    }
 }
