@@ -3,6 +3,7 @@ package Repository;
 import Entities.Estudiante;
 import javax.persistence.EntityManager;
 import java.io.IOException;
+import org.apache.commons.csv.*;
 
 public class EstudianteRepository {
 
@@ -27,11 +28,11 @@ public class EstudianteRepository {
 
             estudiante.setDNI(Integer.parseInt(line[0]));
 
-            em.persist(person);
+            em.persist(estudiante);
         }
 
         em.getTransaction().commit();
-        System.out.print("\nPeople added successfully");
+        System.out.print("\nEstudiante agregado exitosamente");
         em.close();
     }
 }

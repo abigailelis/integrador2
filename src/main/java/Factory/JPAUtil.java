@@ -4,16 +4,16 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-    public class JPAUtil {
-        private static final EntityManagerFactory emf;
+public class JPAUtil {
+    private static final EntityManagerFactory emf;
 
-        static {
-            emf = Persistence.createEntityManagerFactory("P2_E1_JPA");
-        }
-
-        public static EntityManager getEntityManager(){
-            return emf.createEntityManager();
-        }
+    static {
+        emf = Persistence.createEntityManagerFactory("P2_E1_JPA");
     }
 
+    public static EntityManager getEntityManager(){
+        return emf.createEntityManager();
+    }
 }
+
+
