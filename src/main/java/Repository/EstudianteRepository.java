@@ -4,6 +4,7 @@ import Entities.Estudiante;
 import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.io.FileReader;
+import Factory.JPAUtil;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 
@@ -29,12 +30,28 @@ public class EstudianteRepository {
             Estudiante estudiante = new Estudiante();
 
             estudiante.setDNI(Integer.parseInt(line[0]));
+            estudiante.setNombre(line[1]);
+            estudiante.setApellido(line[2]);
+            estudiante.setEdad(Integer.parseInt(line[3]));
+            estudiante.setGenero(line[4]);
+            estudiante.setCiudad(line[5]);
+            estudiante.setLU(Integer.parseInt(line[6]));
 
             em.persist(estudiante);
         }
 
         em.getTransaction().commit();
         System.out.print("\nEstudiante agregado exitosamente");
+        em.close();
+    }
+
+    public void insertarEstudiante(Estudiante estudiante){
+        EntityManager em = JPAUtil.getEntityManager();
+
+        em.getTransaction().begin();
+        em.persist(estudiante);
+        em.getTransaction().commit();
+        System.out.println("Estudiante agregado correctamente");
         em.close();
     }
 }
