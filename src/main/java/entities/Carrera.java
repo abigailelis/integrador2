@@ -11,9 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Carrera {
-
     @Id
     private int id_carrera;
 
@@ -23,6 +21,12 @@ public class Carrera {
     @Column
     private int duracion;
 
-    @OneToMany(mappedBy = "carrera")
+    @OneToMany
     private List<EstudianteCarrera> estudiantes;
+
+    public Carrera(int id_carrera, String carrera, int duracion) {
+        this.id_carrera = id_carrera;
+        this.carrera = carrera;
+        this.duracion = duracion;
+    }
 }

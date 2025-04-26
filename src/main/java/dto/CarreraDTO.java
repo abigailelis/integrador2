@@ -13,6 +13,6 @@ public class CarreraDTO {
     @Override
     public String toString(){
         return "\nCarrera: " + carrera
-                + "Duracion: " + duracion;
+                + " | Duracion: " + duracion;
     }
 }

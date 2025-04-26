@@ -22,7 +22,7 @@ public class EstudianteDTO {
     @Override
     public String toString(){
         return "\nDNI: " + DNI
-                + "Nombre: " + nombre
+                + " | Nombre: " + nombre
                 + " | apellido: " + apellido
                 + " | edad: " + edad
                 + " | genero: " + genero

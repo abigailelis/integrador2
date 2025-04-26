@@ -114,7 +114,7 @@ public class EstudianteRepository {
      * @param ciudad Nombre de la ciudad.
      * @return Lista de estudiantes filtrados.
      */
-    public List<EstudianteDTO> buscarEstudiantesApellido(String carrera, String ciudad){
+    public List<EstudianteDTO> buscarEstudiantesCarreraCiudad(String carrera, String ciudad){
         EntityManager em = JPAUtil.getEntityManager();
         List<Estudiante> estudiantes = em.createQuery(
                                 "SELECT e FROM Estudiante e " +

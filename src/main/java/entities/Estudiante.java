@@ -12,7 +12,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Estudiante {
     @Id
     private int DNI;
@@ -29,7 +28,17 @@ public class Estudiante {
     @Column
     private int LU;
 
-    @OneToMany(mappedBy = "estudiante")
+    @OneToMany
     private List<EstudianteCarrera> carreras;
 
+
+    public Estudiante(int DNI,String nombre, String apellido,int edad, String genero, String ciudad, int LU) {
+        this.DNI = DNI;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.edad = edad;
+        this.genero = genero;
+        this.ciudad = ciudad;
+        this.LU = LU;
+    }
 }
