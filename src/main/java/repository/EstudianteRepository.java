@@ -117,10 +117,9 @@ public class EstudianteRepository {
     public List<EstudianteDTO> buscarEstudiantesCarreraCiudad(String carrera, String ciudad){
         EntityManager em = JPAUtil.getEntityManager();
         List<Estudiante> estudiantes = em.createQuery(
-                                "SELECT ec FROM EstudianteCarrera ec " +
-                                        "JOIN Estudiante e " +
-                                        "JOIN Carrera c " +
-                                        "WHERE c.carrera = :carrera AND e.ciudad = :ciudad",
+                        "SELECT e FROM Estudiante e " +
+                                "JOIN e.carreras ec " +
+                                "WHERE ec.carrera.carrera = :carrera AND e.ciudad = :ciudad",
                         Estudiante.class)
                 .setParameter("carrera", carrera)
                 .setParameter("ciudad", ciudad)

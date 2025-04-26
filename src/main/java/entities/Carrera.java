@@ -1,7 +1,6 @@
 package entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,7 +20,7 @@ public class Carrera {
     @Column
     private int duracion;
 
-    @OneToMany(mappedBy = "carrera")
+    @OneToMany (mappedBy = "carrera")
     private List<EstudianteCarrera> estudiantes;
 
     public Carrera(int id_carrera, String carrera, int duracion) {

@@ -1,11 +1,9 @@
 package entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.List;
 
 @Entity
@@ -27,10 +25,8 @@ public class Estudiante {
     private String ciudad;
     @Column
     private int LU;
-
     @OneToMany(mappedBy = "estudiante")
     private List<EstudianteCarrera> carreras;
-
 
     public Estudiante(int DNI,String nombre, String apellido,int edad, String genero, String ciudad, int LU) {
         this.DNI = DNI;

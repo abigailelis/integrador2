@@ -65,4 +65,30 @@ public class CarreraRepository {
             throw e;
         }
     }
+
+    /**
+     * esta funcion genera un reporte de carreras ordenada alfabeticamente y cronologicamente,
+     * mostrando los inscriptos y graduados por carrera
+     * @return lista de carreras con sus cantidades de inscriptos y graduados por año
+     */
+    public List<ReporteCarreraDTO> generarReporteCarreras() {
+        EntityManager em = JPAUtil.getEntityManager();
+        List<ReporteCarreraDTO> reportes = new ArrayList<>();
+        try{
+            reportes = em.createQuery("SELECT new dto.ReporteCarreraDTO(" +
+                    "c.carrera, COALESCE(ec.inscripcion, ec.graduacion), " +
+                    "SUM(CASE WHEN ec.inscripcion IS NOT NULL THEN 1 ELSE 0 END), " +
+                    "SUM(CASE WHEN ec.graduacion IS NOT NULL AND ec.graduacion > 0 THEN 1 ELSE 0 END) " +
+                    ")" +
+                    "FROM EstudianteCarrera ec " +
+                    "JOIN ec.carrera c " +
+                    "GROUP BY c.carrera, COALESCE(ec.inscripcion, ec.graduacion) " +
+                    "ORDER BY c.carrera, COALESCE(ec.inscripcion, ec.graduacion)", ReporteCarreraDTO.class).getResultList();
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        } finally {
+            em.close();
+        }
+        return reportes;
+    }
 }
