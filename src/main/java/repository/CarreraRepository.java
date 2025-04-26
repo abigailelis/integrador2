@@ -75,8 +75,8 @@ public class CarreraRepository {
         try{
             reportes = em.createQuery("SELECT new dto.ReporteCarreraDTO(" +
                     "c.carrera, COALESCE(ec.inscripcion, ec.graduacion), " +
-                    "SUM(CASE WHEN ec.inscripcion IS NOT NULL THEN 1 ELSE NULL END), " +
-                    "SUM(CASE WHEN ec.graduacion IS NOT NULL THEN 1 ELSE NULL END) " +
+                    "SUM(CASE WHEN ec.inscripcion IS NOT NULL THEN 1 ELSE 0 END), " +
+                    "SUM(CASE WHEN ec.graduacion IS NOT NULL AND ec.graduacion > 0 THEN 1 ELSE 0 END) " +
                     ")" +
                     "FROM EstudianteCarrera ec " +
                     "JOIN ec.carrera c " +
