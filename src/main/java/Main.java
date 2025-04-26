@@ -1,10 +1,10 @@
 import com.opencsv.exceptions.CsvValidationException;
-import entities.Carrera;
-import entities.Estudiante;
+import dto.ReporteCarreraDTO;
 import repository.CarreraRepository;
 import repository.EstudianteCarreraRepository;
 import repository.EstudianteRepository;
 import java.io.IOException;
+import java.util.List;
 
 
 public class Main {
@@ -39,6 +39,10 @@ public class Main {
         //System.out.println(repEstudiante.buscarEstudiantesGenero("Male"));
         //System.out.println(repEstudiante.buscarEstudiantesCarreraCiudad("TUDAI", "Samal"));
 
+        List<ReporteCarreraDTO> reportes = repCarrera.generarReporteCarreras();
+        for (ReporteCarreraDTO reporte : reportes){
+            System.out.println(reporte);
+        }
 
     }
 

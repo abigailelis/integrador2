@@ -65,4 +65,27 @@ public class CarreraRepository {
             throw e;
         }
     }
+
+    //Generar un reporte de las carreras, que para cada carrera incluya información de los inscriptos
+    // y egresados por año. Se deben ordenar las carreras alfabéticamente, y presentar los años de
+    // manera cronológica.
+    public List<ReporteCarreraDTO> generarReporteCarreras() {
+        EntityManager em = JPAUtil.getEntityManager();
+        List<ReporteCarreraDTO> reportes = new ArrayList<>();
+        try{
+            reportes = em.createQuery("SELECT new integrador2.dto.ReporteCarreraDTO(" +
+                    "c.carrera, COALESCE(ec.inscripcion, ec.graduacion), " +
+                    "COUNT(CASE WHEN ec.inscripcion IS NOT NULL THEN 1 ELSE NULL END), " +
+                    "COUNT(CASE WHEN ec.graduacion IS NOT NULL THEN 1 ELSE NULL END) " +
+                    "FROM EstudianteCarrera ec " +
+                    "JOIN ec.carrera c " +
+                    "GROUP BY c.carrera, COALESCE(ec.inscripcion, ec.graduacion) " +
+                    "ORDER BY c.carrera, COALESCE(ec.inscripcion, ec.graduacion)", ReporteCarreraDTO.class).getResultList();
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        } finally {
+            em.close();
+        }
+        return reportes;
+    }
 }

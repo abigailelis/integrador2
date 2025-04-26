@@ -28,10 +28,6 @@ public class Estudiante {
     @Column
     private int LU;
 
-    @OneToMany
-    private List<EstudianteCarrera> carreras;
-
-
     public Estudiante(int DNI,String nombre, String apellido,int edad, String genero, String ciudad, int LU) {
         this.DNI = DNI;
         this.nombre = nombre;
