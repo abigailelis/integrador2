@@ -22,36 +22,42 @@ public class Main {
         repEstudiante.insertarEstudianteCSV("estudiantes.csv");
         repEstudianteCarrera.matricularEstudiantesCSV("estudianteCarrera.csv");
 
-        System.out.println(repEstudiante.buscarEstudiantes());
+        // Dar de alta a un estudiante
+        //Estudiante newEstudiante = new Estudiante(39111222,"Manuel","Perez",66,"Male","Necochea",99911);
+        //repEstudiante.insertarEstudiante(newEstudiante);
 
+        //b)Matricular estudiante en una carrera
+        //Carrera newCarrera = new Carrera(50, "Diseñador Gráfico", 3);
+        //repCarrera.insertarCarrera(newCarrera);
+        //repEstudianteCarrera.matricularEstudiante(newEstudiante, newCarrera);
 
-        // Insertar estudiante, Insertar carrera y Matricular estudiante
-        /**
-        Estudiante newEstudiante = new Estudiante(39111222,"Manuel","Perez",66,"Male","Necochea",99911);
-        Carrera newCarrera = new Carrera(50, "Diseñador Gráfico", 3);
+        //c)Recuperar todos los estudiantes con el criterio de ordenamiento : Apellido;
+        // System.out.println(repEstudiante.buscarEstudiantesApellido());
 
-        repEstudiante.insertarEstudiante(newEstudiante);
-        repCarrera.insertarCarrera(newCarrera);
-        repEstudianteCarrera.matricularEstudiante(newEstudiante, newCarrera);
+        //d)Recuperar un estudiante en base a su LU
+        // System.out.println(repEstudiante.buscarEstudiantesLU(19844));
 
-        System.out.println(repEstudiante.buscarEstudiantes());
-         */
-
-        //System.out.println(repEstudiante.buscarEstudiantesApellido());
-        //System.out.println(repEstudiante.buscarEstudiantesLU(19844));
+        //e)Recuperar todos los estudiantes en base a su género
         //System.out.println(repEstudiante.buscarEstudiantesGenero("Male"));
-        //System.out.println(repEstudiante.buscarEstudiantesCarreraCiudad("TUDAI", "Samal"));
 
+        //f)Recuperar las carreras con estudiantes inscriptos y ordenar por cantidad de inscriptos
+        //List<CarreraInscriptosDTO> reportes = repEstudianteCarrera.buscarCarrerasConEstudiantes();
+        //for (CarreraInscriptosDTO reporte : reportes){
+        //   System.out.println(reporte);
+        //}
+
+        //g)Recuperar los estudiantes de una determinada carrera, filtrado por ciudad de residencia
+        //System.out.println(repEstudiante.buscarEstudiantesCarreraCiudad("TUDAI", "Rauch"));
+
+        //3- Reporte de las carreras con inscriptos y egresados.
+        //Ordenado alfabeticamente por carrera y cronológicamente por años
         //List<ReporteCarreraDTO> reportes = repCarrera.generarReporteCarreras();
         //for (ReporteCarreraDTO reporte : reportes){
         //    System.out.println(reporte);
         //}
 
-        List<CarreraInscriptosDTO> reportes = repEstudianteCarrera.buscarCarrerasConEstudiantes();
-        for (CarreraInscriptosDTO reporte : reportes){
-            System.out.println(reporte);
-        }
-
+        //Imprimir lista completa de estudiantes
+        System.out.println(repEstudiante.buscarEstudiantes());
     }
 
 }
