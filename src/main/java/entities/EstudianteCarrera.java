@@ -25,4 +25,12 @@ public class EstudianteCarrera {
 
     @Column
     private int antiguedad;
+
+    @ManyToOne
+    @JoinColumn(name = "id_estudiante", referencedColumnName = "DNI", insertable = false, updatable = false)
+    private Estudiante estudiante;
+
+    @ManyToOne
+    @JoinColumn(name = "id_carrera", referencedColumnName = "id_carrera", insertable = false, updatable = false)
+    private Carrera carrera;
 }
