@@ -21,7 +21,7 @@ public class Carrera {
     @Column
     private int duracion;
 
-    @OneToMany
+    @OneToMany(mappedBy = "carrera")
     private List<EstudianteCarrera> estudiantes;
 
     public Carrera(int id_carrera, String carrera, int duracion) {

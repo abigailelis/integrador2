@@ -17,6 +17,14 @@ public class EstudianteCarrera {
     @EmbeddedId
     private EstudianteCarreraKey id;
 
+    @ManyToOne
+    @JoinColumn(name = "estudiante")
+    private Estudiante estudiante;
+
+    @ManyToOne
+    @JoinColumn(name = "carrera")
+    private Carrera carrera;
+
     @Column
     private int inscripcion;
 

@@ -28,7 +28,7 @@ public class Estudiante {
     @Column
     private int LU;
 
-    @OneToMany
+    @OneToMany(mappedBy = "estudiante")
     private List<EstudianteCarrera> carreras;
 
 
