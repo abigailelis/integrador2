@@ -66,9 +66,11 @@ public class CarreraRepository {
         }
     }
 
-    //Generar un reporte de las carreras, que para cada carrera incluya información de los inscriptos
-    // y egresados por año. Se deben ordenar las carreras alfabéticamente, y presentar los años de
-    // manera cronológica.
+    /**
+     * esta funcion genera un reporte de carreras ordenada alfabeticamente y cronologicamente,
+     * mostrando los inscriptos y graduados por carrera
+     * @return lista de carreras con sus cantidades de inscriptos y graduados por año
+     */
     public List<ReporteCarreraDTO> generarReporteCarreras() {
         EntityManager em = JPAUtil.getEntityManager();
         List<ReporteCarreraDTO> reportes = new ArrayList<>();

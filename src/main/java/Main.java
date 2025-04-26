@@ -1,4 +1,5 @@
 import com.opencsv.exceptions.CsvValidationException;
+import dto.CarreraInscriptosDTO;
 import dto.ReporteCarreraDTO;
 import repository.CarreraRepository;
 import repository.EstudianteCarreraRepository;
@@ -19,7 +20,7 @@ public class Main {
         repEstudiante.insertarEstudianteCSV("estudiantes.csv");
         repEstudianteCarrera.matricularEstudiantesCSV("estudianteCarrera.csv");
 
-        System.out.println(repEstudiante.buscarEstudiantes());
+        //System.out.println(repEstudiante.buscarEstudiantes());
 
 
         // Insertar estudiante, Insertar carrera y Matricular estudiante
@@ -34,13 +35,18 @@ public class Main {
         System.out.println(repEstudiante.buscarEstudiantes());
          */
 
-        System.out.println(repEstudiante.buscarEstudiantesApellido());
+        //System.out.println(repEstudiante.buscarEstudiantesApellido());
         //System.out.println(repEstudiante.buscarEstudiantesLU(19844));
         //System.out.println(repEstudiante.buscarEstudiantesGenero("Male"));
         //System.out.println(repEstudiante.buscarEstudiantesCarreraCiudad("TUDAI", "Samal"));
 
-        List<ReporteCarreraDTO> reportes = repCarrera.generarReporteCarreras();
-        for (ReporteCarreraDTO reporte : reportes){
+        //List<ReporteCarreraDTO> reportes = repCarrera.generarReporteCarreras();
+        //for (ReporteCarreraDTO reporte : reportes){
+        //    System.out.println(reporte);
+        //}
+
+        List<CarreraInscriptosDTO> reportes = repEstudianteCarrera.buscarCarrerasConEstudiantes();
+        for (CarreraInscriptosDTO reporte : reportes){
             System.out.println(reporte);
         }
 

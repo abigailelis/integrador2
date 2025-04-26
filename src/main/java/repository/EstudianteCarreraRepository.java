@@ -2,13 +2,16 @@ package repository;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
+import dto.CarreraInscriptosDTO;
 import entities.*;
 import factory.JPAUtil;
 
 import jakarta.persistence.EntityManager;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class EstudianteCarreraRepository {
 
@@ -108,6 +111,30 @@ public class EstudianteCarreraRepository {
         estudianteCarreraKey.setId_carrera(id_carrera);
 
         return estudianteCarreraKey;
+    }
+
+    /**
+     * esta funcion genera una lista de carreras con estudiantes inscriptos y ordenada por su cantidad
+     * @return lista de carreras con sus cantidades de inscriptos y ordenada por ellos
+     */
+    public List<CarreraInscriptosDTO> buscarCarrerasConEstudiantes() {
+        EntityManager em = JPAUtil.getEntityManager();
+        List<CarreraInscriptosDTO> reportes = new ArrayList<>();
+        try{
+            reportes = em.createQuery("SELECT new dto.CarreraInscriptosDTO(" +
+                    "c.carrera, c.duracion, " +
+                    "COUNT(CASE WHEN ec.inscripcion IS NOT NULL AND ec.inscripcion > 0 THEN 1 ELSE 0 END)" +
+                    ")" +
+                    "FROM EstudianteCarrera ec " +
+                    "JOIN ec.carrera c " +
+                    "GROUP BY c.carrera, c.duracion " +
+                    "ORDER BY SUM(CASE WHEN ec.inscripcion IS NOT NULL AND ec.inscripcion > 0 THEN 1 ELSE 0 END) DESC", CarreraInscriptosDTO.class).getResultList();
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        } finally {
+            em.close();
+        }
+        return reportes;
     }
     
 }
