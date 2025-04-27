@@ -13,82 +13,118 @@ import java.util.List;
 
 public class CarreraRepository {
 
-    // Insertar carras desde archivo CSV
-    public void insertarCarreraCSV(String urlFile) throws IOException, CsvValidationException {
+    /**
+     * Inserta todas las carreras desde un archivo csv.
+     * En caso de haber errores en la transacción se muestran los mensajes correspondientes
+     * @param urlFile path del archivo csv correspondiente
+     */
+    public void insertarCarreraCSV(String urlFile) {
         EntityManager em = JPAUtil.getEntityManager();
+        EntityTransaction transaction = em.getTransaction();
         String root = "src\\main\\resources\\csv\\" + urlFile;
-        CSVReader reader = new CSVReader(new FileReader(root));
-        String[] line;
-        reader.readNext();
 
-        em.getTransaction().begin();
+        try (CSVReader reader = new CSVReader(new FileReader(root))) {
+            String[] line;
+            reader.readNext();
 
-        while((line = reader.readNext()) != null){
-            Carrera carrera = new Carrera();
+            transaction.begin();
+            boolean success = true;
 
-            carrera.setId_carrera(Integer.parseInt(line[0]));
-            carrera.setCarrera(line[1]);
-            carrera.setDuracion(Integer.parseInt(line[2]));
-            em.persist(carrera);
+            while ((line = reader.readNext()) != null) {
+                try {
+                    Carrera carrera = new Carrera();
+                    carrera.setId_carrera(Integer.parseInt(line[0]));
+                    carrera.setCarrera(line[1]);
+                    carrera.setDuracion(Integer.parseInt(line[2]));
+                    em.persist(carrera);
+                } catch (Exception e) {
+                    success = false;
+                    System.err.println("\nError al agregar la carrera con el ID: " + line[0] + " - " + e.getMessage());
+                }
+            }
+
+            if (success)
+                commitTransaction(transaction, "\nCarreras agregadas exitosamente.");
+            else
+                rollbackTransaction(transaction, "\nError al intentar insertar las carreras, la transacción se ha revertido.");
+
+        } catch (Exception e) {
+            System.err.println("\nError al leer el archivo CSV: " + e.getMessage());
+        } finally {
+            em.close();
         }
-
-        em.getTransaction().commit();
-        System.out.print("\nCarreras agregadas exitosamente");
-        em.close();
     }
 
-    // Buscar todas las carreras
-    public List<CarreraDTO> buscarTodasCarreras() {
-        EntityManager em = JPAUtil.getEntityManager();
-        TypedQuery<Carrera> query = em.createQuery("SELECT c FROM Carrera c", Carrera.class);
-        List<Carrera> resultados = query.getResultList();
-        List<CarreraDTO> carrerasDTO = new ArrayList<>();
-
-        for (Carrera c : resultados) {
-            CarreraDTO carreraDTO = new CarreraDTO(c.getId_carrera(), c.getCarrera(), c.getDuracion());
-            carrerasDTO.add(carreraDTO);
-        }
-
-        return carrerasDTO;
-    }
-
-    // Insertar carrera manualmente
+    /**
+     * Inserta una nueva carrera en la base de datos
+     * @param carrera Carrera nueva que se desea agregar a la base de datos
+     */
     public void insertarCarrera(Carrera carrera) {
         EntityManager em = JPAUtil.getEntityManager();
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
             em.persist(carrera);
-            transaction.commit();
+            commitTransaction(transaction, "\nCarrera agregada exitosamente: " + carrera.getCarrera());
         } catch (Exception e) {
-            transaction.rollback();
-            throw e;
+            rollbackTransaction(transaction, "\nError al insertar carrera con ID " + carrera.getId_carrera() + ": " + e.getMessage());
+        } finally {
+            em.close();
         }
     }
 
     /**
-     * esta funcion genera un reporte de carreras ordenada alfabeticamente y cronologicamente,
+     * Genera un reporte de carreras ordenada alfabeticamente y cronologicamente,
      * mostrando los inscriptos y graduados por carrera
      * @return lista de carreras con sus cantidades de inscriptos y graduados por año
      */
     public List<ReporteCarreraDTO> generarReporteCarreras() {
         EntityManager em = JPAUtil.getEntityManager();
         List<ReporteCarreraDTO> reportes = new ArrayList<>();
-        try{
-            reportes = em.createQuery("SELECT new dto.ReporteCarreraDTO(" +
-                    "c.carrera, COALESCE(ec.inscripcion, ec.graduacion), " +
-                    "SUM(CASE WHEN ec.inscripcion IS NOT NULL THEN 1 ELSE 0 END), " +
-                    "SUM(CASE WHEN ec.graduacion IS NOT NULL AND ec.graduacion > 0 THEN 1 ELSE 0 END) " +
-                    ")" +
-                    "FROM EstudianteCarrera ec " +
-                    "JOIN ec.carrera c " +
-                    "GROUP BY c.carrera, COALESCE(ec.inscripcion, ec.graduacion) " +
-                    "ORDER BY c.carrera, COALESCE(ec.inscripcion, ec.graduacion)", ReporteCarreraDTO.class).getResultList();
-        } catch (Exception e){
-            System.out.println(e.getMessage());
+
+        try {
+            reportes = em.createQuery(
+                    "SELECT new dto.ReporteCarreraDTO(" +
+                            "c.carrera, COALESCE(ec.inscripcion, ec.graduacion), " +
+                            "SUM(CASE WHEN ec.inscripcion IS NOT NULL THEN 1 ELSE 0 END), " +
+                            "SUM(CASE WHEN ec.graduacion IS NOT NULL AND ec.graduacion > 0 THEN 1 ELSE 0 END) " +
+                            ")" +
+                            "FROM EstudianteCarrera ec " +
+                            "JOIN ec.carrera c " +
+                            "GROUP BY c.carrera, COALESCE(ec.inscripcion, ec.graduacion) " +
+                            "ORDER BY c.carrera, COALESCE(ec.inscripcion, ec.graduacion)",
+                    ReporteCarreraDTO.class
+            ).getResultList();
+
+            if (reportes.isEmpty())
+                System.out.println("No se encontraron registros para el reporte de carreras.");
+
+        } catch (Exception e) {
+            System.err.println("Error al generar el reporte de carreras: " + e.getMessage());
         } finally {
             em.close();
         }
+
         return reportes;
+    }
+
+    /**
+     * Realiza el commit de una transacción y muestra un mensaje de éxito.
+     * @param transaction La transacción que se va a confirmar.
+     * @param msgExito Mensaje que se imprimirá al completar la transacción exitosamente.
+     */
+    public void commitTransaction(EntityTransaction transaction, String msgExito){
+        transaction.commit();
+        System.out.println(msgExito);
+    }
+
+    /**
+     * Revierte la transacción y muestra un mensaje de error.
+     * @param transaction La transacción que se va a revertir.
+     * @param msgExito Mensaje de error que se imprimirá al revertir la transacción.
+     */
+    public void rollbackTransaction(EntityTransaction transaction, String msgError){
+        transaction.rollback();
+        System.err.println(msgError);
     }
 }

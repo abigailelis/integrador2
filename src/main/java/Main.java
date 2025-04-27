@@ -1,4 +1,5 @@
 import com.opencsv.exceptions.CsvValidationException;
+import dto.EstudianteDTO;
 import entities.Carrera;
 import entities.Estudiante;
 import dto.CarreraInscriptosDTO;
@@ -22,42 +23,60 @@ public class Main {
         repEstudiante.insertarEstudianteCSV("estudiantes.csv");
         repEstudianteCarrera.matricularEstudiantesCSV("estudianteCarrera.csv");
 
-        // Dar de alta a un estudiante
-        //Estudiante newEstudiante = new Estudiante(39111222,"Manuel","Perez",66,"Male","Necochea",99911);
-        //repEstudiante.insertarEstudiante(newEstudiante);
+        //a)
+        /*
+        System.out.println("\n\n-----Dar de alta a un estudiante-----");
+        Estudiante newEstudiante = new Estudiante(39111222,"Manuel","Perez",66,"Male","Necochea",99911);
+        repEstudiante.insertarEstudiante(newEstudiante);
+        */
 
-        //b)Matricular estudiante en una carrera
-        //Carrera newCarrera = new Carrera(50, "Diseñador Gráfico", 3);
-        //repCarrera.insertarCarrera(newCarrera);
-        //repEstudianteCarrera.matricularEstudiante(newEstudiante, newCarrera);
+        //b)
+        /*
+        System.out.println("\n\n-----Matricular estudiante en una carrera-----");
+        Carrera newCarrera = new Carrera(50, "Diseñador Gráfico", 3);
+        repCarrera.insertarCarrera(newCarrera);
+        repEstudianteCarrera.matricularEstudiante(newEstudiante, newCarrera);
+        */
 
-        //c)Recuperar todos los estudiantes con el criterio de ordenamiento : Apellido;
-        // System.out.println(repEstudiante.buscarEstudiantesApellido());
+        //c)
+        System.out.println("\n\n-----Recuperar todos los estudiantes con el criterio de ordenamiento : Apellido-----");
+        List<EstudianteDTO> estudiantesOrdenados = repEstudiante.buscarEstudiantesApellido();
+        for(EstudianteDTO estudiante : estudiantesOrdenados)
+            System.out.println(estudiante);
 
-        //d)Recuperar un estudiante en base a su LU
-        // System.out.println(repEstudiante.buscarEstudiantesLU(19844));
+        //d)
+        System.out.println("\n\n-----Recuperar un estudiante en base a su LU-----");
+        System.out.println(repEstudiante.buscarEstudianteLU(19844));
 
-        //e)Recuperar todos los estudiantes en base a su género
-        //System.out.println(repEstudiante.buscarEstudiantesGenero("Male"));
+        //e)
+        System.out.println("\n\n-----Recuperar todos los estudiantes en base a su género-----");
+        List<EstudianteDTO> estudiantesGenero = repEstudiante.buscarEstudiantesGenero("Male");
+        for(EstudianteDTO estudiante : estudiantesGenero)
+            System.out.println(estudiante);
 
-        //f)Recuperar las carreras con estudiantes inscriptos y ordenar por cantidad de inscriptos
-        //List<CarreraInscriptosDTO> reportes = repEstudianteCarrera.buscarCarrerasConEstudiantes();
-        //for (CarreraInscriptosDTO reporte : reportes){
-        //   System.out.println(reporte);
-        //}
+        //f)
+        System.out.println("\n\n-----Recuperar las carreras con estudiantes inscriptos y ordenar por cantidad de inscriptos-----");
+        List<CarreraInscriptosDTO> carreras = repEstudianteCarrera.buscarCarrerasConEstudiantes();
+        for (CarreraInscriptosDTO carrera : carreras)
+            System.out.println(carrera);
 
-        //g)Recuperar los estudiantes de una determinada carrera, filtrado por ciudad de residencia
-        //System.out.println(repEstudiante.buscarEstudiantesCarreraCiudad("TUDAI", "Rauch"));
+        //g)
+        System.out.println("\n\n-----Recuperar los estudiantes de una determinada carrera, filtrado por ciudad de residencia-----");
+        List<EstudianteDTO> estudiantesCarrera = repEstudiante.buscarEstudiantesCarreraCiudad("TUDAI", "Rauch");
+        for(EstudianteDTO estudiante : estudiantesCarrera)
+            System.out.println(estudiante);
 
-        //3- Reporte de las carreras con inscriptos y egresados.
-        //Ordenado alfabeticamente por carrera y cronológicamente por años
-        //List<ReporteCarreraDTO> reportes = repCarrera.generarReporteCarreras();
-        //for (ReporteCarreraDTO reporte : reportes){
-        //    System.out.println(reporte);
-        //}
+        //3
+        System.out.println("\n\n-----Reporte de las carreras con inscriptos y egresados. " +
+                "Ordenado alfabeticamente por carrera y cronológicamente por años-----");
+        List<ReporteCarreraDTO> reportes = repCarrera.generarReporteCarreras();
+        for (ReporteCarreraDTO reporte : reportes)
+           System.out.println(reporte);
 
-        //Imprimir lista completa de estudiantes
-        System.out.println(repEstudiante.buscarEstudiantes());
+
+
+
+
     }
 
 }

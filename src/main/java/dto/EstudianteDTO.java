@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * Data Transfer Object (edu.isistan.db.DTO) for representing a person.
- * This class contains personal details such as name, age, city, address and partner information.
+ * DTO (Data Transfer Object) que representa un estudiante con su dni, nombre, apellido, edad, genero, ciudad y libreta universitaria.
+ * Se utiliza para transportar datos desde la base de datos a la capa de presentación.
  */
 
 @Getter
@@ -21,7 +21,7 @@ public class EstudianteDTO {
 
     @Override
     public String toString(){
-        return "\nDNI: " + DNI
+        return "DNI: " + DNI
                 + " | Nombre: " + nombre
                 + " | apellido: " + apellido
                 + " | edad: " + edad

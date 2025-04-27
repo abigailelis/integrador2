@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.List;
 
+/**
+ * Representa a un estudiante con información personal y la lista de carreras en las que está matriculado.
+ */
 @Entity
 @Getter
 @Setter
@@ -13,18 +16,28 @@ import java.util.List;
 public class Estudiante {
     @Id
     private int DNI;
+
     @Column
     private String nombre;
+
     @Column
     private String apellido;
+
     @Column
     private int edad;
+
     @Column
     private String genero;
+
     @Column
     private String ciudad;
+
     @Column
     private int LU;
+
+    /**
+     * Lista de carreras en las que el estudiante está matriculado.
+     */
     @OneToMany(mappedBy = "estudiante")
     private List<EstudianteCarrera> carreras;
 

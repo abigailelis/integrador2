@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.List;
 
+/**
+ * Representa una carrera universitaria con información sobre el nombre, duración y los estudiantes inscritos.
+ */
 @Entity
 @Getter
 @Setter
@@ -20,6 +23,9 @@ public class Carrera {
     @Column
     private int duracion;
 
+    /**
+     * Lista de estudiantes inscritos en la carrera.
+     */
     @OneToMany (mappedBy = "carrera")
     private List<EstudianteCarrera> estudiantes;
 

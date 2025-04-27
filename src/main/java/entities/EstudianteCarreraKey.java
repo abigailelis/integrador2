@@ -7,6 +7,9 @@ import lombok.Setter;
 
 import java.io.Serializable;
 
+/**
+ * Clase que representa una clave compuesta para la relación entre estudiante y carrera.
+ */
 @Embeddable
 @Getter
 @Setter
