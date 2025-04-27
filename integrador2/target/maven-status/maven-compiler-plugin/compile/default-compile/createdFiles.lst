@@ -1,0 +1,10 @@
+dto\CarreraInscriptosDTO.class
+entities\Estudiante.class
+Main.class
+dto\EstudianteDTO.class
+dto\ReporteCarreraDTO.class
+factory\JPAUtil.class
+dto\CarreraDTO.class
+entities\EstudianteCarrera.class
+entities\Carrera.class
+entities\EstudianteCarreraKey.class
